@@ -7,12 +7,82 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
+
+# Problem 1
 
 ```{r}
 library(moderndive)
+data("early_january_weather")
 ```
 
 ```{r}
+# To get a basic understanding of the dataset
+?early_january_weather
+head(early_january_weather)
 
 ```
+
+-   **Discuss the variables in this dataset, including names / values of important variables**
+
+    There are total 15 variables.
+
+    1.  origin: it shows the weather station. (values only contain EWR)
+    2.  year, month, day, hour: time of recording. (values from 2013.01.01 0 hour t0 2013.01.15 23 hour)
+    3.  temp, dewp: temperature and dewpoint in F. (values varies)
+    4.  humid: relative humidity. (values varies)
+    5.  wind_dir, wind_speed, wind_gust: wind direction in degrees, wind speed in mph, and gust speed in mph (some missing values in wind_gust). (values varies)
+    6.  precip: precipitation in inches. (values varies)
+    7.  pressure: Sea level pressure in millibars. (values varies, some missing values)
+    8.  visib: visibility in miles. (values varies)
+    9.  time_hour: date and hour of the recording as a POSIXct date.
+
+------------------------------------------------------------------------
+
+```{r}
+#calculate the size of the dataset
+
+cols = early_january_weather %>%
+  ncol()
+
+rows = nrow(early_january_weather)
+
+cols
+rows
+```
+
+-   **The size of the dataset:** `early_january_weather` dataset has 358 rows and 15 cols (represents 15 variables and 358 observations)
+
+------------------------------------------------------------------------
+
+```{r}
+# calculate the mean temperature
+mean_temp = mean(early_january_weather$temp,na.rm=T) #get rid of the missing values if any
+
+mean_temp
+```
+
+-   **The mean temperature:** `early_january_weather` dataset has a mean temperature of 39.58212 F.
+
+------------------------------------------------------------------------
+
+```{r}
+# Make a scatterplot of temp (y) vs time_hour (x)
+
+library(ggplot2)
+plot_p1 = early_january_weather %>%
+  ggplot(aes(x = time_hour, y = temp, color = humid))  +
+  geom_point() +
+  labs(x = 'Date and hour', y = 'Temperature (F)', title = 'Scatter plot of temperature vs time_hour')
+
+plot_p1
+
+ggsave("Scatter plot.png", plot = plot_p1)
+```
+
+-   **The patterns that are apparent in this plot**
+
+    The trend of temperature and humidity changes in every day is roughly the same, during the day the temperature is high and the humidity is high, and in the evening and night the temperature is low and the humidity is low.
+
+# Problem 2
