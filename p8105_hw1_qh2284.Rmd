@@ -8,6 +8,7 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(ggplot2)
 ```
 
 # Problem 1
@@ -58,7 +59,7 @@ rows
 
 ```{r}
 # calculate the mean temperature
-mean_temp = mean(early_january_weather$temp,na.rm=T) #get rid of the missing values if any
+mean_temp = mean(early_january_weather$temp, na.rm = T) #get rid of the missing values if any
 
 mean_temp
 ```
@@ -69,8 +70,6 @@ mean_temp
 
 ```{r}
 # Make a scatterplot of temp (y) vs time_hour (x)
-
-library(ggplot2)
 plot_p1 = early_january_weather %>%
   ggplot(aes(x = time_hour, y = temp, color = humid))  +
   geom_point() +
@@ -86,3 +85,104 @@ ggsave("Scatter plot.png", plot = plot_p1)
     The trend of temperature and humidity changes in every day is roughly the same, during the day the temperature is high and the humidity is high, and in the evening and night the temperature is low and the humidity is low.
 
 # Problem 2
+
+```{r}
+# create a random sample of size 10 from a standard Normal distribution
+
+set.seed(210) # set a seed to make the random results same
+
+p2_random = rnorm(10, mean = 0, sd = 1)
+
+p2_random
+```
+
+```{r}
+# Create a logical vector indicating whether elements are greater than 0
+
+p2_logic = p2_random > 0
+
+p2_logic
+```
+
+```{r}
+# Create a character vector of length 10
+
+p2_char = c("A", "B", "C", "D", "E", "F", "G", "H", "I", "J")
+
+p2_char
+```
+
+```{r}
+# Create a factor vector of length 10 with 3 different levels
+
+p2_factor = factor(rep(c("Poor", "Normal", "Good"), length.out = 10))
+
+p2_factor
+```
+
+```{r}
+# create a dataframe
+
+p2_data = data.frame(
+  RandomSample = p2_random,
+  IsGT0 = p2_logic,
+  Chars = p2_char,
+  Factors = p2_factor
+)
+
+p2_data
+```
+
+```{r}
+# calculate the means within the dataframe
+random_mean = mean(pull(p2_data, RandomSample), na.rm = T) # get rid of the missing values
+
+random_mean
+
+logic_mean = mean(pull(p2_data, IsGT0))
+
+logic_mean
+
+
+```
+
+```{r}
+
+char_mean = mean(pull(p2_data, Chars))
+
+char_mean
+```
+
+```{r}
+factor_mean = mean(pull(p2_data, Factors))
+
+factor_mean
+```
+
+Above all, we could observe that we could calculate the means for the random samples and the logical vector, but we could not calculate the means for character vector and factor vector.
+
+```{r}
+# convert logical, character, and factor variables to numeric
+
+num_logic = as.numeric(p2_data$IsGT0)
+```
+
+```{r}
+num_char = as.numeric(p2_data$Chars)
+```
+
+```{r}
+num_factor = as.numeric(p2_data$Factors)
+```
+
+Above all, we could observe that we could apply `as.numeric` function to logical values and factor vectors, but could not apply to character vectors.
+
+The reasons are as below:
+
+1.  **Logical Variable**: Applying **`as.numeric()`** to a logical variable will convert **`TRUE`** to 1 and **`FALSE`** to 0, since it's a binary coding of logical values.
+
+2.  **Character Variable:** There will be two situation when applying **`as.numeric()`** to a character variable. If character variables are valid numeric representations (e.g., "1", "2", "3"), they could be converted to numeric. If the character values are not numeric representations (e.g., "A", "B", "C"), they will be converted to **`NA`** (missing values). In our example, since the character values are "A", "B", ..., "J", they could NOT be converted to numeric.
+
+3.  **Factor Variable**: There will be two situation when applying **`as.numeric()`** to a factor vector. If the factors are ordinal, they could be convert to numeric vectors where each level is replaced with its corresponding integer code. If the factors are nominal, it may not be meaningful (but it can also convert to numeric). In this example, since "poor", "normal", "good" has natural order, it's meaningful with the numeric conversion.
+
+Since R could only calculate the means of numeric values. Except logical variable would automatically convert to numeric, factor vector and char vector could not be calculated a mean. Apply `as.numeric` function helps to calculate the mean values for different variable. But as mentioned above, some conversion is impossible and some conversion is meaningless, we should take these into consideration when we do the conversion.
