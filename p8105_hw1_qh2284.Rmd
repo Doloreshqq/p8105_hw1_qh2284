@@ -21,7 +21,7 @@ data("early_january_weather")
 ```{r}
 # To get a basic understanding of the dataset
 ?early_january_weather
-head(early_january_weather)
+names(early_january_weather)
 
 ```
 
