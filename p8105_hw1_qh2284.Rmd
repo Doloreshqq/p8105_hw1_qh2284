@@ -53,7 +53,7 @@ cols
 rows
 ```
 
--   **The size of the dataset:** `early_january_weather` dataset has 358 rows and 15 cols (represents 15 variables and 358 observations)
+-   **The size of the dataset:** `early_january_weather` dataset has `r rows` rows and `r cols` cols (represents 15 variables and 358 observations)
 
 ------------------------------------------------------------------------
 
@@ -64,7 +64,7 @@ mean_temp = mean(early_january_weather$temp, na.rm = T) #get rid of the missing 
 mean_temp
 ```
 
--   **The mean temperature:** `early_january_weather` dataset has a mean temperature of 39.58212 F.
+-   **The mean temperature:** `early_january_weather` dataset has a mean temperature of `r mean_temp` F.
 
 ------------------------------------------------------------------------
 
@@ -167,7 +167,7 @@ Above all, we could observe that we could calculate the means for the random sam
 num_logic = as.numeric(p2_data$IsGT0)
 ```
 
-```{r}
+```{r, eval=F}
 num_char = as.numeric(p2_data$Chars)
 ```
 
